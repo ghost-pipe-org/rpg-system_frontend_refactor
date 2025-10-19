@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Menu, LogOut, User as UserIcon } from "lucide-react";
-import { useNavigate, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../context/AuthContext";
+import { useAppNavigation } from "../../hooks/useAuth";
+import { ROUTES, ROUTE_LABELS } from "../../routes/routes.constants";
 
 const Separator: React.FC = () => <span className="mx-5">•</span>;
 
@@ -20,7 +22,7 @@ export default function Navbar() {
   }
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const { goToHome, goToLogin, goToRegister, goTo } = useAppNavigation();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -28,26 +30,26 @@ export default function Navbar() {
     return location.pathname === path;
   };
 
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/cadastro";
+  const isAuthPage = location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
 
   const pages: Page[] = [
     {
-      endpoint: "/",
-      linkName: "início",
+      endpoint: ROUTES.HOME,
+      linkName: ROUTE_LABELS[ROUTES.HOME],
     },
     {
-      endpoint: "/sessoes",
-      linkName: "sessões",
+      endpoint: ROUTES.SESSIONS,
+      linkName: ROUTE_LABELS[ROUTES.SESSIONS],
     },
     {
-      endpoint: "/eventos",
-      linkName: "eventos",
+      endpoint: ROUTES.EVENTS,
+      linkName: ROUTE_LABELS[ROUTES.EVENTS],
     },
   ];
 
   const signOut = () => {
     logout();
-    navigate("/");
+    goToHome();
   };
 
   return (
@@ -59,7 +61,7 @@ export default function Navbar() {
       }}
     >
       <div className="flex items-center">
-        <Button variant="ghost" size="icon" className="cursor-pointer hover:bg-transparent" onClick={() => navigate("/")}>
+        <Button variant="ghost" size="icon" className="cursor-pointer hover:bg-transparent" onClick={goToHome}>
           <img src={logo} alt="Logo" className="h-8 w-8" />
         </Button>
       </div>
@@ -69,7 +71,7 @@ export default function Navbar() {
           {pages.map((page, index) => (
             <div key={`${page.linkName}-${index}`} className="flex items-center">
               <button
-                onClick={() => navigate(page.endpoint)}
+                onClick={() => goTo(page.endpoint)}
                 className={
                   isActive(page.endpoint) ? activeNavLinkClass : navLinkClass
                 }
@@ -106,14 +108,14 @@ export default function Navbar() {
             <Button
               variant="outline"
               className="hidden lg:flex items-center justify-center px-4 py-1"
-              onClick={() => navigate("/login")}
+              onClick={goToLogin}
             >
               entrar
             </Button>
 
             <Button
               className="hidden lg:flex items-center justify-center px-4 py-1"
-              onClick={() => navigate("/cadastro")}
+              onClick={goToRegister}
             >
               criar conta
             </Button>
@@ -138,7 +140,7 @@ export default function Navbar() {
             <div key={`${page.linkName}-${index}`} className="flex my-2">
               <button
                 onClick={() => {
-                  navigate(page.endpoint);
+                  goTo(page.endpoint);
                   setMenuOpen(false);
                 }}
                 className={
@@ -173,7 +175,7 @@ export default function Navbar() {
                 variant="outline"
                 className="flex w-full px-4 py-1"
                 onClick={() => {
-                  navigate("/login");
+                  goToLogin();
                   setMenuOpen(false);
                 }}
               >
@@ -185,7 +187,7 @@ export default function Navbar() {
               <Button
                 className="px-4 py-1"
                 onClick={() => {
-                  navigate("/cadastro");
+                  goToRegister();
                   setMenuOpen(false);
                 }}
               >

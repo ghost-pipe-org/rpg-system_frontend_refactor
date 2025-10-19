@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router";
+import { Link } from "react-router";
 import { toast } from "sonner";
 import {
   Form,
@@ -15,10 +15,12 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import RootLayout from "../components/layout/RootLayout";
 import { useAuth } from "../context/AuthContext";
-import { loginSchema, type LoginFormData } from "../schemas/auth";
+import { loginSchema, type LoginFormData } from "../schemas/auth.schemas";
+import { useAppNavigation } from "../hooks/useAuth";
+import { ROUTES } from "../routes/routes.constants";
 
 export default function LogIn() {
-  const navigate = useNavigate();
+  const { goToHome } = useAppNavigation();
   const { login } = useAuth();
 
   const form = useForm<LoginFormData>({
@@ -33,7 +35,7 @@ export default function LogIn() {
     try {
       await login(values);
       toast.success("Login realizado com sucesso!");
-      navigate("/");
+      goToHome();
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Erro ao fazer login";
       toast.error(errorMessage);
@@ -86,7 +88,7 @@ export default function LogIn() {
 
             <FormDescription className="flex justify-center gap-1 font-prompt">
               Não possuí uma conta?
-              <Link to="/cadastro" className="text-accent hover:text-primary no-underline hover:cursor-pointer">
+              <Link to={ROUTES.REGISTER} className="text-accent hover:text-primary no-underline hover:cursor-pointer">
                 Criar uma conta.
               </Link>
             </FormDescription>
