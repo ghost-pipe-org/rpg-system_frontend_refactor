@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import {
   Form,
@@ -21,7 +22,14 @@ import { ROUTES } from "../routes/routes";
 
 export default function LogIn() {
   const { goToHome } = useAppNavigation();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.info("Você já está logado! Redirecionando...");
+      goToHome();
+    }
+  }, [isAuthenticated, goToHome]);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -30,6 +38,19 @@ export default function LogIn() {
       password: "",
     },
   });
+
+  if (isAuthenticated) {
+    return (
+      <RootLayout>
+        <div className="mx-auto max-w-md w-full text-center">
+          <h1 className="text-2xl text-foreground mb-4">Redirecionando...</h1>
+          <p className="text-muted-foreground">
+            Você já está logado. Redirecionando para a página inicial.
+          </p>
+        </div>
+      </RootLayout>
+    );
+  }
 
   async function onSubmit(values: LoginFormData) {
     try {

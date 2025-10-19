@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
   Form,
@@ -20,11 +20,20 @@ import RootLayout from "../components/layout/RootLayout";
 import { createUser } from "../services";
 import { registerSchema, type RegisterFormData } from "../schemas/auth.schemas";
 import { useAppNavigation } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../routes/routes";
 
 export default function SingUp() {
   const [isLoading, setIsLoading] = useState(false);
-  const { goToLogin } = useAppNavigation();
+  const { goToLogin, goToHome } = useAppNavigation();
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.info("Você já está logado! Redirecionando...");
+      goToHome();
+    }
+  }, [isAuthenticated, goToHome]);
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -38,6 +47,19 @@ export default function SingUp() {
       confirmPassword: "",
     },
   });
+
+  if (isAuthenticated) {
+    return (
+      <RootLayout>
+        <div className="mx-auto max-w-md w-full text-center">
+          <h1 className="text-2xl text-foreground mb-4">Redirecionando...</h1>
+          <p className="text-muted-foreground">
+            Você já está logado. Redirecionando para a página inicial.
+          </p>
+        </div>
+      </RootLayout>
+    );
+  }
 
   async function onSubmit(values: RegisterFormData) {
     setIsLoading(true);
