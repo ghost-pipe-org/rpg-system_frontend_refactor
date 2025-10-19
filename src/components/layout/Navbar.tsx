@@ -5,7 +5,7 @@ import { useLocation } from "react-router";
 import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../context/AuthContext";
 import { useAppNavigation } from "../../hooks/useAuth";
-import { ROUTES, ROUTE_LABELS } from "../../routes/routes.constants";
+import { ROUTES, ROUTE_LABELS } from "../../routes/routes";
 
 const Separator: React.FC = () => <span className="mx-5">•</span>;
 
@@ -40,10 +40,6 @@ export default function Navbar() {
     {
       endpoint: ROUTES.SESSIONS,
       linkName: ROUTE_LABELS[ROUTES.SESSIONS],
-    },
-    {
-      endpoint: ROUTES.EVENTS,
-      linkName: ROUTE_LABELS[ROUTES.EVENTS],
     },
     {
       endpoint: ROUTES.TEST,

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { ROUTES } from '../routes/routes.constants';
+import { ROUTES } from '../routes/routes';
 
 export const useAppNavigation = () => {
   const navigate = useNavigate();
@@ -8,9 +8,7 @@ export const useAppNavigation = () => {
   const goToLogin = () => navigate(ROUTES.LOGIN);
   const goToRegister = () => navigate(ROUTES.REGISTER);
   const goToSessions = () => navigate(ROUTES.SESSIONS);
-  const goToEvents = () => navigate(ROUTES.EVENTS);
   const goToTest = () => navigate(ROUTES.TEST);
-  const goToNotFound = () => navigate(ROUTES.NOT_FOUND);
 
   const goTo = (path: string) => navigate(path);
 
@@ -19,9 +17,7 @@ export const useAppNavigation = () => {
     goToLogin,
     goToRegister,
     goToSessions,
-    goToEvents,
     goToTest,
-    goToNotFound,
     goTo,
     navigate,
     routes: ROUTES

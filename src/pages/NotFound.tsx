@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Button } from "../components/ui/button";
 import { Link as RouterLink } from "react-router";
 import { Home } from "lucide-react";
-import { ROUTES } from "../routes/routes.constants";
+import { ROUTES } from "../routes/routes";
 
 const NotFound = () => {
   const location = useLocation();

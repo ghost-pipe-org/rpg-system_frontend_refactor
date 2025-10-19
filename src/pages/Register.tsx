@@ -20,7 +20,7 @@ import RootLayout from "../components/layout/RootLayout";
 import { createUser } from "../services";
 import { registerSchema, type RegisterFormData } from "../schemas/auth.schemas";
 import { useAppNavigation } from "../hooks/useAuth";
-import { ROUTES } from "../routes/routes.constants";
+import { ROUTES } from "../routes/routes";
 
 export default function SingUp() {
   const [isLoading, setIsLoading] = useState(false);

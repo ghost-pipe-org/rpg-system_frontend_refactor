@@ -1,4 +1,2 @@
-export { AppRouter } from './AppRouter';
-export { AppRoutes, type AppRoute } from './routes.config';
-export { ROUTES, ROUTE_LABELS, ROUTE_CONFIG } from './routes.constants';
-export type { RoutePath, RouteLabel, RouteConfig } from './routes.constants';
+export { AppRouter } from './Router';
+export { routes, ROUTES, ROUTE_LABELS } from './routes';

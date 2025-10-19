@@ -17,7 +17,7 @@ import RootLayout from "../components/layout/RootLayout";
 import { useAuth } from "../context/AuthContext";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schemas";
 import { useAppNavigation } from "../hooks/useAuth";
-import { ROUTES } from "../routes/routes.constants";
+import { ROUTES } from "../routes/routes";
 
 export default function LogIn() {
   const { goToHome } = useAppNavigation();
