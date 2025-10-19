@@ -4,6 +4,7 @@ export const ROUTES = {
   REGISTER: '/register',
   SESSIONS: '/sessions',
   EVENTS: '/events',
+  TEST: '/test',
   NOT_FOUND: '*'
 } as const;
 
@@ -12,7 +13,8 @@ export const ROUTE_LABELS = {
   [ROUTES.LOGIN]: 'Login',
   [ROUTES.REGISTER]: 'Cadastro',
   [ROUTES.SESSIONS]: 'Sessões',
-  [ROUTES.EVENTS]: 'Eventos'
+  [ROUTES.EVENTS]: 'Eventos',
+  [ROUTES.TEST]: 'Testes'
 } as const;
 
 export const ROUTE_CONFIG = {
@@ -55,6 +57,13 @@ export const ROUTE_CONFIG = {
     label: 'Página não encontrada',
     title: 'Página não encontrada',
     requireAuth: false,
+    requireMaster: false,
+    redirectTo: undefined
+  },
+  [ROUTES.TEST]: {
+    label: 'Testes',
+    title: 'Testes',
+    requireAuth: true,
     requireMaster: false,
     redirectTo: undefined
   }

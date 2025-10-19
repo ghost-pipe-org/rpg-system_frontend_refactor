@@ -9,6 +9,7 @@ export const useAppNavigation = () => {
   const goToRegister = () => navigate(ROUTES.REGISTER);
   const goToSessions = () => navigate(ROUTES.SESSIONS);
   const goToEvents = () => navigate(ROUTES.EVENTS);
+  const goToTest = () => navigate(ROUTES.TEST);
   const goToNotFound = () => navigate(ROUTES.NOT_FOUND);
 
   const goTo = (path: string) => navigate(path);
@@ -19,6 +20,7 @@ export const useAppNavigation = () => {
     goToRegister,
     goToSessions,
     goToEvents,
+    goToTest,
     goToNotFound,
     goTo,
     navigate,

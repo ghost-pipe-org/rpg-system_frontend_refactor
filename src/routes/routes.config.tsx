@@ -1,4 +1,4 @@
-import { Login, Register, NotFound, Home, Sessions } from '../pages';
+import { Login, Register, NotFound, Home, Sessions, Test } from '../pages';
 import { ROUTES, ROUTE_CONFIG } from './routes.constants';
 
 export interface AppRoute {
@@ -32,8 +32,13 @@ export const AppRoutes: AppRoute[] = [
     ...ROUTE_CONFIG[ROUTES.SESSIONS]
   },
   {
+    path: ROUTES.TEST,
+    element: <Test />,
+    ...ROUTE_CONFIG[ROUTES.TEST]
+  },
+  {
     path: ROUTES.NOT_FOUND,
     element: <NotFound />,
     ...ROUTE_CONFIG[ROUTES.NOT_FOUND]
-  }
+  },
 ];

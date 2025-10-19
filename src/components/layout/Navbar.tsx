@@ -45,6 +45,10 @@ export default function Navbar() {
       endpoint: ROUTES.EVENTS,
       linkName: ROUTE_LABELS[ROUTES.EVENTS],
     },
+    {
+      endpoint: ROUTES.TEST,
+      linkName: ROUTE_LABELS[ROUTES.TEST],
+    },
   ];
 
   const signOut = () => {
