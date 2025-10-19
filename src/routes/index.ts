@@ -1,2 +1,2 @@
-export { AppRouter } from './Router';
+export { AppRouter } from './AppRouter';
 export { routes, ROUTES, ROUTE_LABELS } from './routes';
