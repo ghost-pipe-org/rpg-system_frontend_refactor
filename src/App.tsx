@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import { Login, Register, NotFound, Home } from './pages';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
-
+//a
 function App() {
   return (
     <AuthProvider>
