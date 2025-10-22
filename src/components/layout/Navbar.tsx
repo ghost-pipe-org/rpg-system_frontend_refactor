@@ -33,6 +33,13 @@ export default function Navbar() {
   const isAuthPage =
     location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
 
+  // Verifica se o usuário é admin
+  const isAdmin = 
+    user?.role === 'ADMIN' || 
+    user?.isAdmin === true ||
+    user?.enrollment === '000000001' ||
+    user?.email?.toLowerCase().includes('admin');
+
   const pages: Page[] = [
     {
       endpoint: ROUTES.HOME,
@@ -46,7 +53,19 @@ export default function Navbar() {
       endpoint: ROUTES.CREATE_SESSIONS,
       linkName: ROUTE_LABELS[ROUTES.CREATE_SESSIONS],
     },
+    {
+      endpoint: ROUTES.PROFILE,
+      linkName: ROUTE_LABELS[ROUTES.PROFILE],
+    },
   ];
+
+  // Adiciona a página Admin apenas se o usuário for admin
+  if (isAdmin) {
+    pages.push({
+      endpoint: ROUTES.ADMIN,
+      linkName: ROUTE_LABELS[ROUTES.ADMIN],
+    });
+  }
 
   const signOut = () => {
     logout();
