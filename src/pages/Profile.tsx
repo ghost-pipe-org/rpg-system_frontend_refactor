@@ -43,8 +43,18 @@ const Profile = () => {
             sessionsData = response.data.sessions;
           }
           
-          console.log("Emitted Sessions - Processed Data:", sessionsData);
-          setEmittedSessions(sessionsData);
+          // Calcula as vagas disponíveis para cada sessão
+          const sessionsWithSlots = sessionsData.map((session: Session) => {
+            const enrolledCount = session.enrollments?.length || 0;
+            const slots = session.maxPlayers - enrolledCount;
+            return {
+              ...session,
+              slots: slots >= 0 ? slots : 0
+            };
+          });
+          
+          console.log("Emitted Sessions - Processed Data:", sessionsWithSlots);
+          setEmittedSessions(sessionsWithSlots);
         }
       } catch (error) {
         console.error("Erro ao buscar sessões emitidas:", error);
@@ -66,21 +76,42 @@ const Profile = () => {
         
         if (isMounted) {
           // Tenta diferentes formatos de resposta
-          let sessionsData = [];
+          let enrollmentsData = [];
           if (Array.isArray(response)) {
-            sessionsData = response;
+            enrollmentsData = response;
           } else if (response.enrolledSessions && Array.isArray(response.enrolledSessions)) {
-            sessionsData = response.enrolledSessions;
-          } else if (response.sessions && Array.isArray(response.sessions)) {
-            sessionsData = response.sessions;
+            enrollmentsData = response.enrolledSessions;
+          } else if (response.enrollments && Array.isArray(response.enrollments)) {
+            enrollmentsData = response.enrollments;
           } else if (response.data && Array.isArray(response.data)) {
-            sessionsData = response.data;
-          } else if (response.data?.sessions && Array.isArray(response.data.sessions)) {
-            sessionsData = response.data.sessions;
+            enrollmentsData = response.data;
           }
           
-          console.log("Enrolled Sessions - Processed Data:", sessionsData);
-          setEnrolledSessions(sessionsData);
+          // Extrai as sessions de dentro dos enrollments
+          // O backend retorna SessionEnrollment[] que tem { session: Session }
+          const sessionsData = enrollmentsData
+            .map((item: { session?: Session } | Session) => {
+              if ('session' in item && item.session) {
+                return item.session;
+              }
+              return item as Session;
+            })
+            .filter(Boolean);
+          
+          console.log("Sessions extraídas dos enrollments:", sessionsData);
+          
+          // Calcula as vagas disponíveis para cada sessão
+          const sessionsWithSlots = sessionsData.map((session: Session) => {
+            const enrolledCount = session.enrollments?.length || 0;
+            const slots = session.maxPlayers - enrolledCount;
+            return {
+              ...session,
+              slots: slots >= 0 ? slots : 0
+            };
+          });
+          
+          console.log("Enrolled Sessions - Processed Data:", sessionsWithSlots);
+          setEnrolledSessions(sessionsWithSlots);
         }
       } catch (error) {
         console.error("Erro ao buscar sessões inscritas:", error);

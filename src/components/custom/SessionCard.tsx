@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Session } from "@/services/sessionServices/session.types";
+import { enrollInSession } from "@/services/sessionServices/session.services";
+import { toast } from "sonner";
+import { useState } from "react";
 
 
 export function SessionSkeleton() {
@@ -32,6 +35,7 @@ interface SessionCardProps {
   session: Session;
   isExpanded: boolean;
   onToggleExpand: (sessionId: string) => void;
+  onEnrollSuccess?: () => void;
 }
 
 const systemLogos: Record<string, string> = {
@@ -49,7 +53,10 @@ export function SessionCard({
   session,
   isExpanded,
   onToggleExpand,
+  onEnrollSuccess,
 }: SessionCardProps) {
+  const [enrolling, setEnrolling] = useState(false);
+
   const formatDate = (date: Date | string) => {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
     return dateObj.toLocaleDateString("pt-BR", {
@@ -57,6 +64,36 @@ export function SessionCard({
       month: "2-digit",
       year: "numeric",
     });
+  };
+
+  const handleEnroll = async () => {
+    if (!session.id) {
+      toast.error("ID da sessão não encontrado");
+      return;
+    }
+
+    try {
+      setEnrolling(true);
+      await enrollInSession(session.id);
+      toast.success("Inscrição realizada com sucesso!");
+      
+      // Chama callback para atualizar a lista
+      if (onEnrollSuccess) {
+        onEnrollSuccess();
+      }
+    } catch (error: unknown) {
+      console.error("Erro ao se inscrever:", error);
+      
+      let errorMessage = "Erro ao realizar inscrição";
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { data?: { message?: string } } };
+        errorMessage = axiosError.response?.data?.message || errorMessage;
+      }
+      
+      toast.error(errorMessage);
+    } finally {
+      setEnrolling(false);
+    }
   };
 
   const systemLogo = systemLogos[session.system] || systemLogos['Outros'];
@@ -129,9 +166,15 @@ export function SessionCard({
 
             <Button
               className="w-full mt-2 uppercase"
-              disabled={(session.slots || 0) === 0}
+              disabled={(session.slots || 0) === 0 || enrolling}
+              onClick={handleEnroll}
             >
-              {(session.slots || 0) > 0 ? "Inscreva-se" : "Sem Vagas Disponíveis"}
+              {enrolling 
+                ? "Inscrevendo..." 
+                : (session.slots || 0) > 0 
+                  ? "Inscreva-se" 
+                  : "Sem Vagas Disponíveis"
+              }
             </Button>
           </div>
         )}
