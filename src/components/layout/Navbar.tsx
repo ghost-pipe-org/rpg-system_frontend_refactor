@@ -46,6 +46,10 @@ export default function Navbar() {
       endpoint: ROUTES.CREATE_SESSIONS,
       linkName: ROUTE_LABELS[ROUTES.CREATE_SESSIONS],
     },
+    {
+      endpoint: ROUTES.PROFILE,
+      linkName: ROUTE_LABELS[ROUTES.PROFILE],
+    },
   ];
 
   const signOut = () => {
