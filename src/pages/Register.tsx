@@ -22,6 +22,7 @@ import { registerSchema, type RegisterFormData } from "../schemas/auth.schemas";
 import { useAppNavigation } from "../hooks/useAuth";
 import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../routes/routes";
+import { formatPhoneNumber } from "../lib/utils";
 
 export default function SingUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -188,6 +189,10 @@ export default function SingUp() {
                       placeholder="(00) 99999-9999"
                       className="font-prompt"
                       {...field}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value);
+                        field.onChange(formatted);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -204,7 +209,7 @@ export default function SingUp() {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••"
+                      placeholder="Digite sua senha"
                       className="font-prompt"
                       {...field}
                     />
@@ -223,7 +228,7 @@ export default function SingUp() {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••"
+                      placeholder="Digite sua senha novamente"
                       className="font-prompt"
                       {...field}
                     />
