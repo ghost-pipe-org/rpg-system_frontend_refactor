@@ -32,6 +32,7 @@ import {
   rejectSession 
 } from "@/services/sessionServices/session.services";
 import { toast } from "sonner";
+import { formatDateBR, datetimeLocalToISO } from "@/lib/date-utils";
 
 const Admin = () => {
   const { user } = useAuth();
@@ -116,12 +117,11 @@ const Admin = () => {
     try {
       setProcessing(true);
       
-      // Converte a data para ISO se vier do input datetime-local
-      let approvedDateISO = selectedDate;
-      if (!selectedDate.includes('T') || !selectedDate.endsWith('Z')) {
-        // Se não estiver no formato ISO, converte
-        approvedDateISO = new Date(selectedDate).toISOString();
-      }
+      // Usa função utilitária para converter mantendo a data correta
+      const approvedDateISO = datetimeLocalToISO(selectedDate);
+      
+      console.log("Data selecionada:", selectedDate);
+      console.log("Data ISO enviada:", approvedDateISO);
       
       await approveSession(selectedSession.id, {
         approvedDate: approvedDateISO,
@@ -162,24 +162,16 @@ const Admin = () => {
     }
   };
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  // Usa função utilitária de formatação
 
   const systemLogos: Record<string, string> = {
-    'D&D 5e': '/src/assets/icons/d&d-logo.svg',
-    'Vampiro: A Máscara': '/src/assets/icons/vampiro-logo.png',
-    'Ordem Paranormal': '/src/assets/icons/ordem-paranormal-logo.svg',
-    'Tormenta20': '/src/assets/icons/t20-logo.png',
-    'Pathfinder 2e': '/src/assets/icons/pathfinder-logo.png',
-    'Call of Cthulhu': '/src/assets/icons/coc-logo.png',
-    'Outros': '/src/assets/icons/logo.png'
+    'D&D 5e': '/icons/d&d-logo.svg',
+    'Vampiro: A Máscara': '/icons/vampiro-logo.png',
+    'Ordem Paranormal': '/icons/ordem-paranormal-logo.svg',
+    'Tormenta20': '/icons/t20-logo.png',
+    'Pathfinder 2e': '/icons/pathfinder-logo.png',
+    'Call of Cthulhu': '/icons/coc-logo.png',
+    'Outros': '/icons/logo.png'
   };
 
   // Redireciona se não for admin
@@ -269,7 +261,7 @@ const Admin = () => {
                         <div className="flex flex-wrap gap-2 mt-2">
                           {session.possibleDates.map((dateObj) => (
                             <Badge key={dateObj.id} variant="outline">
-                              {formatDate(dateObj.date)}
+                              {formatDateBR(dateObj.date)}
                             </Badge>
                           ))}
                         </div>
@@ -320,7 +312,7 @@ const Admin = () => {
                     <SelectContent>
                       {selectedSession.possibleDates.map((dateObj) => (
                         <SelectItem key={dateObj.id} value={dateObj.date}>
-                          {formatDate(dateObj.date)}
+                          {formatDateBR(dateObj.date)}
                         </SelectItem>
                       ))}
                     </SelectContent>

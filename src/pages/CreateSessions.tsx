@@ -12,6 +12,7 @@ import { createSessionSchema, type CreateSessionFormData, System } from '../sche
 import { createSession } from '../services/sessionServices/session.services';
 import { toast } from 'sonner';
 import type { CreateSessionRequest } from '@/services/sessionServices/session.types';
+import { dateToISONoon } from '@/lib/date-utils';
 
 const CreateSessions = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,8 +59,11 @@ const CreateSessions = () => {
     try {
       const sessionData: CreateSessionRequest = {
         ...data,
-        possibleDates: data.possibleDates.map(date => date.toISOString())
+        possibleDates: data.possibleDates.map(date => dateToISONoon(date))
       };
+      
+      console.log("Datas enviadas:", sessionData.possibleDates);
+      
       await createSession(sessionData);
       toast.success('Sessão criada com sucesso!');
       form.reset();
