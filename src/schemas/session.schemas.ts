@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const System = {
   DND: 'D&D 5e',
   VAMPIRE: 'Vampiro: A Máscara',
-  CAOS_EM_NOVA_PATOS: 'Caos em Nova Patos',
+  KAOS_EM_NOVA_PATOS: 'Kaos em Nova Patos',
   ORDEM_PARANORMAL: 'Ordem Paranormal',
   TORMENTA20: 'Tormenta20',
   PATHFINDER: 'Pathfinder 2e',
