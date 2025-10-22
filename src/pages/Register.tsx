@@ -245,7 +245,7 @@ export default function SingUp() {
 
             <Button
               type="submit"
-              className="w-full font-prompt"
+              className="w-full font-prompt uppercase"
               disabled={isLoading}
             >
               {isLoading ? "Criando conta..." : "Criar conta"}

@@ -114,7 +114,7 @@ export default function LogIn() {
               </Link>
             </FormDescription>
 
-            <Button type="submit" className="w-full font-prompt">
+            <Button type="submit" className="w-full font-prompt uppercase">
               Entrar
             </Button>
           </form>

@@ -1,10 +1,11 @@
-import { Login, Register, NotFound, Home, Sessions, Test } from '../pages';
+import { Login, Register, NotFound, Home, Sessions, Test, CreateSessions } from '../pages';
 
 export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
   SESSIONS: '/sessions',
+  CREATE_SESSIONS: '/sessions/create',
   TEST: '/test'
 } as const;
 
@@ -13,6 +14,7 @@ export const ROUTE_LABELS = {
   [ROUTES.LOGIN]: 'Login',
   [ROUTES.REGISTER]: 'Cadastro',
   [ROUTES.SESSIONS]: 'Sessões',
+  [ROUTES.CREATE_SESSIONS]: 'Criar Sessão',
   [ROUTES.TEST]: 'Testes'
 } as const;
 
@@ -40,6 +42,12 @@ export const routes = [
     element: Sessions,
     requireAuth: true,
     title: 'Sessões de RPG'
+  },
+  {
+    path: '/sessions/create',
+    element: CreateSessions,
+    requireAuth: true,
+    title: 'Criar Nova Sessão'
   },
   {
     path: '/test',

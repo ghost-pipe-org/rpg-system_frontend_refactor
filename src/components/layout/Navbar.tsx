@@ -10,7 +10,7 @@ import { ROUTES, ROUTE_LABELS } from "../../routes/routes";
 const Separator: React.FC = () => <span className="mx-5">•</span>;
 
 const navLinkClass =
-  "hover:text-primary text-muted-foreground transition-colors duration-200 text-lg py-2 font-prompt";
+  "hover:text-primary  font-semibold text-muted-foreground transition-colors duration-200 text-lg py-2 font-prompt";
 
 const activeNavLinkClass =
   "text-primary font-semibold transition-colors duration-200 text-lg py-2 font-prompt";
@@ -30,7 +30,8 @@ export default function Navbar() {
     return location.pathname === path;
   };
 
-  const isAuthPage = location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
+  const isAuthPage =
+    location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
 
   const pages: Page[] = [
     {
@@ -42,8 +43,8 @@ export default function Navbar() {
       linkName: ROUTE_LABELS[ROUTES.SESSIONS],
     },
     {
-      endpoint: ROUTES.TEST,
-      linkName: ROUTE_LABELS[ROUTES.TEST],
+      endpoint: ROUTES.CREATE_SESSIONS,
+      linkName: ROUTE_LABELS[ROUTES.CREATE_SESSIONS],
     },
   ];
 
@@ -61,7 +62,12 @@ export default function Navbar() {
       }}
     >
       <div className="flex items-center">
-        <Button variant="ghost" size="icon" className="cursor-pointer hover:bg-transparent" onClick={goToHome}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="cursor-pointer hover:bg-transparent"
+          onClick={goToHome}
+        >
           <img src={logo} alt="Logo" className="h-8 w-8" />
         </Button>
       </div>
@@ -69,15 +75,19 @@ export default function Navbar() {
       {!isAuthPage && (
         <div className="hidden lg:flex items-center text-foreground absolute left-1/2 transform -translate-x-1/2">
           {pages.map((page, index) => (
-            <div key={`${page.linkName}-${index}`} className="flex items-center">
-              <button
+            <div
+              key={`${page.linkName}-${index}`}
+              className="flex items-center"
+            >
+              <Button
+                variant="ghost"
                 onClick={() => goTo(page.endpoint)}
-                className={
+                className={`${
                   isActive(page.endpoint) ? activeNavLinkClass : navLinkClass
-                }
+                } font-mono lowercase hover:bg-transparent`}
               >
                 {page.linkName}
-              </button>
+              </Button>
               {index < pages.length - 1 && <Separator />}
             </div>
           ))}

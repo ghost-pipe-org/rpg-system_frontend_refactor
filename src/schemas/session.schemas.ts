@@ -1,0 +1,51 @@
+import { z } from 'zod';
+
+export const possibleDateSchema = z.object({
+  date: z.date('Data deve estar no formato ISO'),
+  time: z.string().min(1, 'Horário é obrigatório'),
+});
+
+export const createSessionSchema = z.object({
+  title: z.string()
+    .min(3, 'Título deve ter pelo menos 3 caracteres')
+    .max(100, 'Título deve ter no máximo 100 caracteres'),
+  
+  description: z.string()
+    .min(10, 'Descrição deve ter pelo menos 10 caracteres')
+    .max(1000, 'Descrição deve ter no máximo 1000 caracteres'),
+  
+  requirements: z.string()
+    .min(5, 'Requisitos devem ter pelo menos 5 caracteres')
+    .max(500, 'Requisitos devem ter no máximo 500 caracteres'),
+  
+  system: z.string()
+    .min(2, 'Sistema deve ter pelo menos 2 caracteres')
+    .max(50, 'Sistema deve ter no máximo 50 caracteres'),
+  
+  possibleDates: z.array(z.date('Data deve estar no formato ISO'))
+    .min(1, 'Pelo menos uma data deve ser selecionada')
+    .max(10, 'Máximo de 10 datas possíveis'),
+  
+  period: z.enum(['MANHA', 'TARDE', 'NOITE' as const], {
+    error: 'Período deve ser manhã, tarde ou noite'
+  }),
+  
+  minPlayers: z.number()
+    .int('Número mínimo de jogadores deve ser um inteiro')
+    .min(1, 'Mínimo de 1 jogador')
+    .max(20, 'Máximo de 20 jogadores'),
+  
+  maxPlayers: z.number()
+    .int('Número máximo de jogadores deve ser um inteiro')
+    .min(1, 'Mínimo de 1 jogador')
+    .max(10, 'Máximo de 10 jogadores'),
+}).refine(
+  (data) => data.minPlayers <= data.maxPlayers,
+  {
+    message: 'Número mínimo de jogadores deve ser menor ou igual ao máximo',
+    path: ['maxPlayers'],
+  }
+);
+
+export type CreateSessionFormData = z.infer<typeof createSessionSchema>;
+export type PossibleDate = z.infer<typeof possibleDateSchema>;

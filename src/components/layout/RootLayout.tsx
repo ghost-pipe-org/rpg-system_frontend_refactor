@@ -14,13 +14,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className="flex flex-col w-full min-h-screen max-w-screen bg-gradient-to-b from-background to-primary bg-fixed bg-cover bg-center"
       style={{
         backgroundImage:
-          `radial-gradient(var(--chart-3), var(--chart-4)), url(${bgArt})`,
+          `radial-gradient(var(--chart-1), var(--chart-4)), url(${bgArt})`,
         backgroundBlendMode: "multiply",
       }}
     >
       <Toaster className="text-foreground" />
       <Navbar />
-      <main className="flex-1 flex flex-col w-full items-center justify-center my-8">
+      <main className="flex-1 flex flex-col w-full items-center justify-center my-20 ">
         {children}
       </main>
       <Footer />
