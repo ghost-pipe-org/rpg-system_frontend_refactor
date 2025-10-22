@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Session } from "@/services/sessionServices/session.types";
 
+
 export function SessionSkeleton() {
   return (
     <Card className="mb-6 bg-background border-1 border-accent">
@@ -33,6 +34,17 @@ interface SessionCardProps {
   onToggleExpand: (sessionId: string) => void;
 }
 
+const systemLogos: Record<string, string> = {
+  'D&D 5e': '/src/assets/icons/d&d-logo.svg',
+  'Vampiro: A Máscara': '/src/assets/icons/vampiro-logo.png',
+  'Kaos em Nova Patos': '/logos/kaos.png',
+  'Ordem Paranormal': '/src/assets/icons/ordem-paranormal-logo.svg',
+  'Tormenta20': '/src/assets/icons/t20-logo.png',
+  'Pathfinder 2e': '/src/assets/icons/pathfinder-logo.png',
+  'Call of Cthulhu': '/src/assets/icons/coc-logo.png',
+  'Outros': '/src/assets/icons/logo.png'
+};
+
 export function SessionCard({
   session,
   isExpanded,
@@ -47,16 +59,19 @@ export function SessionCard({
     });
   };
 
+  const systemLogo = systemLogos[session.system] || systemLogos['Outros'];
+
   return (
     <Card className="mb-6 bg-background border-1 border-accent">
       <CardHeader className="flex flex-row items-start gap-4 pb-3 font-pixelsans text-foreground">
-        {session.iconUrl && (
-          <img
-            src={session.iconUrl}
-            alt={session.system}
-            className="w-16 h-16"
-          />
-        )}
+      <img
+        src={systemLogo}
+        alt={session.system}
+        className="w-16 h-16 object-contain"
+        onError={(e) => {
+          e.currentTarget.src = systemLogos['Outros'];
+        }}
+      />
 
         <div className="space-y-1">
           <CardTitle className="text-2xl">{session.title}</CardTitle>

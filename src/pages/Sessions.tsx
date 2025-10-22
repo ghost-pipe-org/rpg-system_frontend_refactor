@@ -76,7 +76,7 @@ const Sessions = () => {
                 }
                 onToggleExpand={toggleExpand}
               />
-            ))}
+            ))}     
           </div>
         )}
       </div>

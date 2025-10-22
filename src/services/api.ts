@@ -3,7 +3,7 @@ import axios from "axios";
 const getBaseURL = () => {
   const apiUrl =
     import.meta.env.VITE_API_URL ||
-    "https://rpg-system-api-staging-6bpup4cy7q-ew.a.run.app";
+    "https://rpg-system-api-staging-6bpup4cy7q-ew.a.run.app/";
 
   if (import.meta.env.DEV) {
     return "/api";

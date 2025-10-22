@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Menu, LogOut, User as UserIcon } from "lucide-react";
 import { useLocation } from "react-router";
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/icons/logo.png";
 import { useAuth } from "../../context/AuthContext";
 import { useAppNavigation } from "../../hooks/useAuth";
 import { ROUTES, ROUTE_LABELS } from "../../routes/routes";

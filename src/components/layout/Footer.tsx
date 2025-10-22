@@ -4,7 +4,7 @@ import logoGhostpipe from "../../assets/images/logo-ghostpipe.png";
 import logoUepb from "../../assets/images/logo-uepb.svg";
 import logoCacc from "../../assets/images/logo-cacc.svg";
 import logoCurso from "../../assets/images/logo-curso.svg";
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/icons/logo.png";
 
 export default function Footer() {
   return (
