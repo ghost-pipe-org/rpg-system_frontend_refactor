@@ -1,5 +1,5 @@
 import api from "../api";
-import type { Session, CreateSessionRequest } from "./session.types";
+import type { CreateSessionRequest } from "./session.types";
 
 export const getAprovedSessions = async () => {
     const response = await api.get('/sessions/approved');

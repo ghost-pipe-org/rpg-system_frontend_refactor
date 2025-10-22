@@ -1,5 +1,18 @@
 import { z } from 'zod';
 
+export const System = {
+  DND: 'D&D 5e',
+  VAMPIRE: 'Vampiro: A Máscara',
+  CAOS_EM_NOVA_PATOS: 'Caos em Nova Patos',
+  ORDEM_PARANORMAL: 'Ordem Paranormal',
+  TORMENTA20: 'Tormenta20',
+  PATHFINDER: 'Pathfinder 2e',
+  CALL_OF_CTHULHU: 'Call of Cthulhu',
+  OUTROS: 'Outros'
+} as const;
+
+export type System = typeof System[keyof typeof System];
+
 export const possibleDateSchema = z.object({
   date: z.date('Data deve estar no formato ISO'),
   time: z.string().min(1, 'Horário é obrigatório'),
@@ -18,9 +31,9 @@ export const createSessionSchema = z.object({
     .min(5, 'Requisitos devem ter pelo menos 5 caracteres')
     .max(500, 'Requisitos devem ter no máximo 500 caracteres'),
   
-  system: z.string()
-    .min(2, 'Sistema deve ter pelo menos 2 caracteres')
-    .max(50, 'Sistema deve ter no máximo 50 caracteres'),
+  system: z.enum(Object.values(System) as [string, ...string[]], {
+    message: 'Sistema deve ser um dos valores válidos'
+  }),
   
   possibleDates: z.array(z.date('Data deve estar no formato ISO'))
     .min(1, 'Pelo menos uma data deve ser selecionada')

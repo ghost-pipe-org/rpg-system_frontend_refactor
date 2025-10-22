@@ -29,7 +29,6 @@ const Test = () => {
   useDocumentTitle();
   const { goToHome } = useAppNavigation();
 
-  // Estados para os componentes interativos
   const [switchChecked, setSwitchChecked] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [radioValue, setRadioValue] = useState('option1');
@@ -46,7 +45,6 @@ const Test = () => {
     <RootLayout>
       <TooltipProvider>
         <div className="container mx-auto px-4 py-8 space-y-8">
-          {/* Header */}
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold text-foreground">Página de Testes</h1>
             <p className="text-muted-foreground text-lg font-prompt">
@@ -58,7 +56,6 @@ const Test = () => {
             </Button>
           </div>
 
-          {/* Tabs para organizar os componentes */}
           <Tabs defaultValue="buttons" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="buttons">Botões</TabsTrigger>
@@ -67,7 +64,6 @@ const Test = () => {
               <TabsTrigger value="data">Dados</TabsTrigger>
             </TabsList>
 
-            {/* Tab: Botões */}
             <TabsContent value="buttons" className="space-y-6">
               <Card>
                 <CardHeader>
@@ -108,7 +104,6 @@ const Test = () => {
               </Card>
             </TabsContent>
 
-            {/* Tab: Formulários */}
             <TabsContent value="forms" className="space-y-6">
               <Card>
                 <CardHeader>
@@ -217,7 +212,6 @@ const Test = () => {
               </Card>
             </TabsContent>
 
-            {/* Tab: Modais */}
             <TabsContent value="modals" className="space-y-6">
               <Card>
                 <CardHeader>
@@ -311,7 +305,6 @@ const Test = () => {
               </Card>
             </TabsContent>
 
-            {/* Tab: Dados */}
             <TabsContent value="data" className="space-y-6">
               <Card>
                 <CardHeader>

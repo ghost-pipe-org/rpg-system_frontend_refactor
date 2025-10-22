@@ -38,13 +38,12 @@ export function SessionCard({
   isExpanded,
   onToggleExpand,
 }: SessionCardProps) {
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("pt-BR", {
+  const formatDate = (date: Date | string) => {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return dateObj.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
@@ -62,7 +61,7 @@ export function SessionCard({
         <div className="space-y-1">
           <CardTitle className="text-2xl">{session.title}</CardTitle>
           <p className="text-sm text-muted-foreground font-prompt">
-            {session.system} | {formatDate(session.possibledate[0])} |{" "}
+            {session.system} | {session.createdAt && formatDate(session.createdAt)} |{" "}
             {session.period}
           </p>
         </div>
@@ -89,18 +88,18 @@ export function SessionCard({
 
             <div className="space-y-3 text-foreground">
               <p>
-                <strong className="font-mono">Mestre:</strong> {session.master}
+                <strong className="font-mono">Mestre:</strong> {session.master?.name || 'Não informado'}
               </p>
               <p>
-                <strong className="font-mono">Sala:</strong> {session.room}
+                <strong className="font-mono">Sala:</strong> {session.room || 'Não informado'}
               </p>
               <p>
                 <strong className="font-mono">Vagas disponíveis:</strong>
                 <Badge
-                  variant={session.slots > 0 ? "secondary" : "destructive"}
+                  variant={(session.slots || 0) > 0 ? "secondary" : "destructive"}
                   className="ml-2"
                 >
-                  {session.slots}
+                  {session.slots || 0}
                 </Badge>
               </p>
               <div className="space-y-1">
@@ -115,9 +114,9 @@ export function SessionCard({
 
             <Button
               className="w-full mt-2 uppercase"
-              disabled={session.slots === 0}
+              disabled={(session.slots || 0) === 0}
             >
-              {session.slots > 0 ? "Inscreva-se" : "Sem Vagas Disponíveis"}
+              {(session.slots || 0) > 0 ? "Inscreva-se" : "Sem Vagas Disponíveis"}
             </Button>
           </div>
         )}

@@ -2,7 +2,7 @@ import RootLayout from "@/components/layout/RootLayout";
 import { SessionCard, SessionSkeleton } from "@/components/custom/SessionCard";
 import { useState, useEffect } from "react";
 import type { Session } from "@/services/sessionServices/session.types";
-import { getAprovedSessions } from "@/services/sessionServices/session.services";
+import { getSessions } from "@/services/sessionServices/session.services";
 
 const Sessions = () => {
   const [expandedSessions, setExpandedSessions] = useState<string[]>([]);
@@ -22,12 +22,10 @@ const Sessions = () => {
 
     const fetchSessions = async () => {
       try {
-        console.log("Tentando buscar sessões da API...");
-        const response = await getAprovedSessions();
-        console.log("API Response:", response);
+        const response = await getSessions(); // TODO: Alterar para getAprovedSessions
 
         if (isMounted) {
-          const sessionsData = response.data || response;
+          const sessionsData = response.sessions || response.data || response;
           setSessions(sessionsData || []);
         }
       } catch (error) {

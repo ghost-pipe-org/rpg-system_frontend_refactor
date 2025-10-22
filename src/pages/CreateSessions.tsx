@@ -2,20 +2,20 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RootLayout from '../components/layout/RootLayout';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '../components/ui/form';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Plus, X } from 'lucide-react';
-import { createSessionSchema, type CreateSessionFormData } from '../schemas';
+import { createSessionSchema, type CreateSessionFormData, System } from '../schemas';
 import { createSession } from '../services/sessionServices/session.services';
 import { toast } from 'sonner';
 import type { CreateSessionRequest } from '@/services/sessionServices/session.types';
 
 const CreateSessions = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [possibleDates, setPossibleDates] = useState<string[]>([]);
+  const [possibleDates, setPossibleDates] = useState<Date[]>([]);
 
   const form = useForm<CreateSessionFormData>({
     resolver: zodResolver(createSessionSchema),
@@ -23,7 +23,7 @@ const CreateSessions = () => {
       title: '',
       description: '',
       requirements: '',
-      system: '',
+      system: System.DND,
       possibleDates: [],
       period: 'NOITE',
       minPlayers: 3,
@@ -33,32 +33,34 @@ const CreateSessions = () => {
 
   const addDate = () => {
     const newDate = new Date();
-    newDate.setDate(newDate.getDate() + 7); // Próxima semana
-    newDate.setHours(20, 0, 0, 0); // 20:00
+    newDate.setDate(newDate.getDate() + 7);
     
-    const dateString = newDate.toISOString();
-    const updatedDates = [...possibleDates, dateString];
+    const updatedDates = [...possibleDates, newDate];
     setPossibleDates(updatedDates);
-    form.setValue('possibleDates', updatedDates as Date[]);
+    form.setValue('possibleDates', updatedDates);
   };
 
   const removeDate = (index: number) => {
     const updatedDates = possibleDates.filter((_, i) => i !== index);
     setPossibleDates(updatedDates);
-    form.setValue('possibleDates', updatedDates as Date[]);
+    form.setValue('possibleDates', updatedDates);
   };
 
   const updateDate = (index: number, newDate: string) => {
     const updatedDates = [...possibleDates];
-    updatedDates[index] = newDate;
+    updatedDates[index] = new Date(newDate);
     setPossibleDates(updatedDates);
-    form.setValue('possibleDates', updatedDates as Date[]);
+    form.setValue('possibleDates', updatedDates);
   };
 
   const onSubmit = async (data: CreateSessionFormData) => {
     setIsSubmitting(true);
     try {
-      await createSession(data as CreateSessionRequest);
+      const sessionData: CreateSessionRequest = {
+        ...data,
+        possibleDates: data.possibleDates.map(date => date.toISOString())
+      };
+      await createSession(sessionData);
       toast.success('Sessão criada com sucesso!');
       form.reset();
       setPossibleDates([]);
@@ -70,14 +72,11 @@ const CreateSessions = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (date: Date) => {
     return date.toLocaleDateString('pt-BR', {
       weekday: 'short',
       day: '2-digit',
       month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
     });
   };
 
@@ -117,6 +116,9 @@ const CreateSessions = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-prompt">Descrição</FormLabel>
+                  <FormDescription className="font-prompt">
+                    Dê detalhes sobre o que os jogadores podem esperar da sessão.
+                  </FormDescription>
                   <FormControl>
                     <Textarea 
                       placeholder="Descreva a aventura, cenário e o que os jogadores podem esperar..."
@@ -135,6 +137,9 @@ const CreateSessions = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-prompt">Requisitos</FormLabel>
+                  <FormDescription className="font-prompt">
+                    Especifique qualquer requisito necessário para participar da sessão.
+                  </FormDescription>
                   <FormControl>
                     <Textarea 
                       placeholder="Ex: Conhecimento básico de D&D 5e, disponibilidade para sessões semanais"
@@ -153,13 +158,23 @@ const CreateSessions = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-prompt">Sistema de RPG</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Ex: D&D 5e, Pathfinder, Call of Cthulhu"
-                      className="font-prompt"
-                      {...field} 
-                    />
-                  </FormControl>
+                  <FormDescription className="font-prompt">
+                    Escolha o sistema de RPG que será usado na sessão.
+                  </FormDescription>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="font-prompt bg-background w-full">
+                        <SelectValue placeholder="Selecione um sistema" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.values(System).map((system) => (
+                        <SelectItem key={system} value={system}>
+                          {system}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -188,7 +203,6 @@ const CreateSessions = () => {
               )}
             />
 
-            {/* Número de Jogadores */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -259,12 +273,12 @@ const CreateSessions = () => {
                     <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 border-0">
                       <div className="flex-1 w-full sm:w-auto">
                         <Input
-                          type="datetime-local"
+                          type="date"
                           className="font-prompt"
-                          value={new Date(date).toISOString().slice(0, 16)}
+                          value={date.toISOString().slice(0, 10)}
                           onChange={(e) => {
-                            const newDate = new Date(e.target.value).toISOString();
-                            updateDate(index, newDate);
+                            const newDate = new Date(e.target.value);
+                            updateDate(index, newDate.toISOString());
                           }}
                           placeholder={formatDate(date)}
                         />

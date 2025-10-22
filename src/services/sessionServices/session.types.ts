@@ -11,12 +11,17 @@ interface Session {
     createdAt?: string;
     updatedAt?: string;
     date?: Date | null;
-    possibledate: Date[];
-    master: string;
-    room: string;
-    slots: number;
+    possibledate?: Date[];
+    master?: {
+        name: string;
+    };
+    room?: string;
+    slots?: number;
     requirements: string;
     iconUrl?: string;
+    location?: string | null;
+    approvedDate?: string | null;
+    cancelEvent?: string | null;
 }
 
 interface CreateSessionRequest {
