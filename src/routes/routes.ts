@@ -1,4 +1,4 @@
-import { Login, Register, NotFound, Home, Sessions, Test, CreateSessions, Profile } from '../pages';
+import { Login, Register, NotFound, Home, Sessions, Test, CreateSessions, Profile, Admin } from '../pages';
 
 export const ROUTES = {
   HOME: '/',
@@ -7,6 +7,7 @@ export const ROUTES = {
   SESSIONS: '/sessions',
   CREATE_SESSIONS: '/sessions/create',
   PROFILE: '/profile',
+  ADMIN: '/admin',
   TEST: '/test'
 } as const;
 
@@ -17,6 +18,7 @@ export const ROUTE_LABELS = {
   [ROUTES.SESSIONS]: 'Sessões',
   [ROUTES.CREATE_SESSIONS]: 'Criar Sessão',
   [ROUTES.PROFILE]: 'Perfil',
+  [ROUTES.ADMIN]: 'Admin',
   [ROUTES.TEST]: 'Testes'
 } as const;
 
@@ -56,6 +58,12 @@ export const routes = [
     element: Profile,
     requireAuth: true,
     title: 'Meu Perfil'
+  },
+  {
+    path: '/admin',
+    element: Admin,
+    requireAuth: true,
+    title: 'Administração'
   },
   {
     path: '/test',

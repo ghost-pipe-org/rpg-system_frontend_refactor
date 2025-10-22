@@ -1,5 +1,5 @@
 import api from "../api";
-import type { CreateSessionRequest } from "./session.types";
+import type { CreateSessionRequest, ApproveSessionRequest, RejectSessionRequest } from "./session.types";
 
 export const getAprovedSessions = async () => {
     const response = await api.get('/sessions/approved');
@@ -25,5 +25,20 @@ export const getMyEmittedSessions = async () => {
 export const getMyEnrolledSessions = async () => {
     const response = await api.get('/my-enrolled-sessions');
     console.log("Enrolled Sessions Response:", response);
+    return response.data;
+};
+
+export const approveSession = async (sessionId: string, data: ApproveSessionRequest) => {
+    const response = await api.patch(`/sessions/${sessionId}/approve`, data);
+    return response.data;
+};
+
+export const rejectSession = async (sessionId: string, data: RejectSessionRequest) => {
+    const response = await api.patch(`/sessions/${sessionId}/reject`, data);
+    return response.data;
+};
+
+export const enrollInSession = async (sessionId: string) => {
+    const response = await api.post(`/sessions/${sessionId}/subscribe`);
     return response.data;
 };

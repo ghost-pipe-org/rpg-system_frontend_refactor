@@ -12,6 +12,10 @@ interface Session {
     updatedAt?: string;
     date?: Date | null;
     possibledate?: Date[];
+    possibleDates?: {
+        id: string;
+        date: string;
+    }[];
     master?: {
         name: string;
     };
@@ -22,6 +26,13 @@ interface Session {
     location?: string | null;
     approvedDate?: string | null;
     cancelEvent?: string | null;
+    enrollments?: {
+        id: string;
+        userId: string;
+        sessionId: string;
+        status: string;
+        createdAt: string;
+    }[];
 }
 
 interface CreateSessionRequest {
@@ -35,4 +46,13 @@ interface CreateSessionRequest {
     maxPlayers: number;
 }
 
-export type { Session, CreateSessionRequest };
+interface ApproveSessionRequest {
+    approvedDate: string;
+    location: string;
+}
+
+interface RejectSessionRequest {
+    cancelEvent: string;
+}
+
+export type { Session, CreateSessionRequest, ApproveSessionRequest, RejectSessionRequest };
