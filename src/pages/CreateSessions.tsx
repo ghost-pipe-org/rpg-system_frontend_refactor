@@ -12,7 +12,7 @@ import { createSessionSchema, type CreateSessionFormData, System } from '../sche
 import { createSession } from '../services/sessionServices/session.services';
 import { toast } from 'sonner';
 import type { CreateSessionRequest } from '@/services/sessionServices/session.types';
-import { dateToISONoon } from '@/lib/date-utils';
+import { dateToISONoon } from '@/utils/formatDate';
 
 const CreateSessions = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);

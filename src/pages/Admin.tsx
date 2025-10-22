@@ -32,7 +32,7 @@ import {
   rejectSession 
 } from "@/services/sessionServices/session.services";
 import { toast } from "sonner";
-import { formatDateBR, datetimeLocalToISO } from "@/lib/date-utils";
+import { formatDateBR, datetimeLocalToISO } from "@/utils/formatDate";
 
 const Admin = () => {
   const { user } = useAuth();

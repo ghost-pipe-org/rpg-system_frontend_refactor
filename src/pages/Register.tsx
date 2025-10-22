@@ -22,7 +22,7 @@ import { registerSchema, type RegisterFormData } from "../schemas/auth.schemas";
 import { useAppNavigation } from "../hooks/useAuth";
 import { useAuth } from "../context/AuthContext";
 import { ROUTES } from "../routes/routes";
-import { formatPhoneNumber } from "../lib/utils";
+import { formatPhoneNumber } from "../utils/formatPhoneNumber";
 
 export default function SingUp() {
   const [isLoading, setIsLoading] = useState(false);

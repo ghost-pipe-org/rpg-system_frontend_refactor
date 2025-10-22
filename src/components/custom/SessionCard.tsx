@@ -7,7 +7,7 @@ import type { Session } from "@/services/sessionServices/session.types";
 import { enrollInSession } from "@/services/sessionServices/session.services";
 import { toast } from "sonner";
 import { useState } from "react";
-import { formatDateBR } from "@/lib/date-utils";
+import { formatDateBR } from "@/utils/formatDate";
 
 
 export function SessionSkeleton() {
