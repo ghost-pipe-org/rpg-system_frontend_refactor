@@ -41,6 +41,8 @@ const Sessions = () => {
             const enrolledCount = session.enrollments?.length || 0;
             const slots = session.maxPlayers - enrolledCount;
             console.log(`Sessão ${session.title}:`, {
+              approvedDate: session.approvedDate,
+              createdAt: session.createdAt,
               maxPlayers: session.maxPlayers,
               enrollments: session.enrollments,
               enrolledCount,

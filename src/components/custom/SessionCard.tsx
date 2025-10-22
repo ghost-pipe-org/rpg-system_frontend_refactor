@@ -7,6 +7,7 @@ import type { Session } from "@/services/sessionServices/session.types";
 import { enrollInSession } from "@/services/sessionServices/session.services";
 import { toast } from "sonner";
 import { useState } from "react";
+import { formatDateBR } from "@/lib/date-utils";
 
 
 export function SessionSkeleton() {
@@ -39,14 +40,14 @@ interface SessionCardProps {
 }
 
 const systemLogos: Record<string, string> = {
-  'D&D 5e': '/src/assets/icons/d&d-logo.svg',
-  'Vampiro: A Máscara': '/src/assets/icons/vampiro-logo.png',
+  'D&D 5e': '/icons/d&d-logo.svg',
+  'Vampiro: A Máscara': '/icons/vampiro-logo.png',
   'Kaos em Nova Patos': '/logos/kaos.png',
-  'Ordem Paranormal': '/src/assets/icons/ordem-paranormal-logo.svg',
-  'Tormenta20': '/src/assets/icons/t20-logo.png',
-  'Pathfinder 2e': '/src/assets/icons/pathfinder-logo.png',
-  'Call of Cthulhu': '/src/assets/icons/coc-logo.png',
-  'Outros': '/src/assets/icons/logo.png'
+  'Ordem Paranormal': '/icons/ordem-paranormal-logo.svg',
+  'Tormenta20': '/icons/t20-logo.png',
+  'Pathfinder 2e': '/icons/pathfinder-logo.png',
+  'Call of Cthulhu': '/icons/coc-logo.png',
+  'Outros': '/icons/logo.png'
 };
 
 export function SessionCard({
@@ -56,15 +57,6 @@ export function SessionCard({
   onEnrollSuccess,
 }: SessionCardProps) {
   const [enrolling, setEnrolling] = useState(false);
-
-  const formatDate = (date: Date | string) => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    return dateObj.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
 
   const handleEnroll = async () => {
     if (!session.id) {
@@ -113,7 +105,7 @@ export function SessionCard({
         <div className="space-y-1">
           <CardTitle className="text-2xl">{session.title}</CardTitle>
           <p className="text-sm text-muted-foreground font-prompt">
-            {session.system} | {session.createdAt && formatDate(session.createdAt)} |{" "}
+            {session.system} | {session.approvedDate ? formatDateBR(session.approvedDate) : (session.createdAt && formatDateBR(session.createdAt))} |{" "}
             {session.period}
           </p>
         </div>
