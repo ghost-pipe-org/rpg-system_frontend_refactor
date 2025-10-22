@@ -1,39 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import { Login, Register, NotFound, Home } from './pages';
+import { BrowserRouter as Router } from 'react-router';
 import { AuthProvider } from './context/AuthContext';
-import { ProtectedRoute } from './components/ProtectedRoute';
-//a
+import { AppRouter } from './routes';
+import { DocumentTitle } from './components/DocumentTitle';
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/login" 
-            element={
-              <ProtectedRoute requireAuth={false}>
-                <Login />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/cadastro" 
-            element={
-              <ProtectedRoute requireAuth={false}>
-                <Register />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <DocumentTitle />
+        <AppRouter />
       </Router>
     </AuthProvider>
   );

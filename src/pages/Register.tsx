@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
   Form,
@@ -19,11 +18,22 @@ import { Label } from "../components/ui/label";
 import { Link } from "react-router";
 import RootLayout from "../components/layout/RootLayout";
 import { createUser } from "../services";
-import { registerSchema, type RegisterFormData } from "../schemas/auth";
+import { registerSchema, type RegisterFormData } from "../schemas/auth.schemas";
+import { useAppNavigation } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
+import { ROUTES } from "../routes/routes";
 
 export default function SingUp() {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const { goToLogin, goToHome } = useAppNavigation();
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.info("Você já está logado! Redirecionando...");
+      goToHome();
+    }
+  }, [isAuthenticated, goToHome]);
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -37,6 +47,19 @@ export default function SingUp() {
       confirmPassword: "",
     },
   });
+
+  if (isAuthenticated) {
+    return (
+      <RootLayout>
+        <div className="mx-auto max-w-md w-full text-center">
+          <h1 className="text-2xl text-foreground mb-4">Redirecionando...</h1>
+          <p className="text-muted-foreground">
+            Você já está logado. Redirecionando para a página inicial.
+          </p>
+        </div>
+      </RootLayout>
+    );
+  }
 
   async function onSubmit(values: RegisterFormData) {
     setIsLoading(true);
@@ -52,7 +75,7 @@ export default function SingUp() {
 
       await createUser(userData);
       toast.success("Conta criada com sucesso! Faça login para continuar.");
-      navigate("/login");
+      goToLogin();
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Erro ao criar conta";
       toast.error(errorMessage);
@@ -213,7 +236,7 @@ export default function SingUp() {
             <FormDescription className="flex justify-center gap-1 font-prompt">
               Já tem uma conta?
               <Link
-                to={"/login"}
+                to={ROUTES.LOGIN}
                 className="text-accent hover:text-primary no-underline hover:cursor-pointer"
               >
                 Faça login
@@ -222,7 +245,7 @@ export default function SingUp() {
 
             <Button
               type="submit"
-              className="w-full font-prompt"
+              className="w-full font-prompt uppercase"
               disabled={isLoading}
             >
               {isLoading ? "Criando conta..." : "Criar conta"}

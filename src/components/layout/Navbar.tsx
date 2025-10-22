@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Menu, LogOut, User as UserIcon } from "lucide-react";
-import { useNavigate, useLocation } from "react-router";
-import logo from "../../assets/images/logo.svg";
+import { useLocation } from "react-router";
+import logo from "../../assets/icons/logo.png";
 import { useAuth } from "../../context/AuthContext";
+import { useAppNavigation } from "../../hooks/useAuth";
+import { ROUTES, ROUTE_LABELS } from "../../routes/routes";
 
 const Separator: React.FC = () => <span className="mx-5">•</span>;
 
 const navLinkClass =
-  "hover:text-primary text-muted-foreground transition-colors duration-200 text-lg py-2 font-prompt";
+  "hover:text-primary  font-semibold text-muted-foreground transition-colors duration-200 text-lg py-2 font-prompt";
 
 const activeNavLinkClass =
   "text-primary font-semibold transition-colors duration-200 text-lg py-2 font-prompt";
@@ -20,7 +22,7 @@ export default function Navbar() {
   }
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const { goToHome, goToLogin, goToRegister, goTo } = useAppNavigation();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -28,26 +30,46 @@ export default function Navbar() {
     return location.pathname === path;
   };
 
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/cadastro";
+  const isAuthPage =
+    location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
+
+  // Verifica se o usuário é admin
+  const isAdmin = 
+    user?.role === 'ADMIN' || 
+    user?.isAdmin === true ||
+    user?.enrollment === '000000001' ||
+    user?.email?.toLowerCase().includes('admin');
 
   const pages: Page[] = [
     {
-      endpoint: "/",
-      linkName: "início",
+      endpoint: ROUTES.HOME,
+      linkName: ROUTE_LABELS[ROUTES.HOME],
     },
     {
-      endpoint: "/sessoes",
-      linkName: "sessões",
+      endpoint: ROUTES.SESSIONS,
+      linkName: ROUTE_LABELS[ROUTES.SESSIONS],
     },
     {
-      endpoint: "/eventos",
-      linkName: "eventos",
+      endpoint: ROUTES.CREATE_SESSIONS,
+      linkName: ROUTE_LABELS[ROUTES.CREATE_SESSIONS],
+    },
+    {
+      endpoint: ROUTES.PROFILE,
+      linkName: ROUTE_LABELS[ROUTES.PROFILE],
     },
   ];
 
+  // Adiciona a página Admin apenas se o usuário for admin
+  if (isAdmin) {
+    pages.push({
+      endpoint: ROUTES.ADMIN,
+      linkName: ROUTE_LABELS[ROUTES.ADMIN],
+    });
+  }
+
   const signOut = () => {
     logout();
-    navigate("/");
+    goToHome();
   };
 
   return (
@@ -59,7 +81,12 @@ export default function Navbar() {
       }}
     >
       <div className="flex items-center">
-        <Button variant="ghost" size="icon" className="cursor-pointer hover:bg-transparent" onClick={() => navigate("/")}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="cursor-pointer hover:bg-transparent"
+          onClick={goToHome}
+        >
           <img src={logo} alt="Logo" className="h-8 w-8" />
         </Button>
       </div>
@@ -67,15 +94,19 @@ export default function Navbar() {
       {!isAuthPage && (
         <div className="hidden lg:flex items-center text-foreground absolute left-1/2 transform -translate-x-1/2">
           {pages.map((page, index) => (
-            <div key={`${page.linkName}-${index}`} className="flex items-center">
-              <button
-                onClick={() => navigate(page.endpoint)}
-                className={
+            <div
+              key={`${page.linkName}-${index}`}
+              className="flex items-center"
+            >
+              <Button
+                variant="ghost"
+                onClick={() => goTo(page.endpoint)}
+                className={`${
                   isActive(page.endpoint) ? activeNavLinkClass : navLinkClass
-                }
+                } font-mono lowercase hover:bg-transparent`}
               >
                 {page.linkName}
-              </button>
+              </Button>
               {index < pages.length - 1 && <Separator />}
             </div>
           ))}
@@ -106,14 +137,14 @@ export default function Navbar() {
             <Button
               variant="outline"
               className="hidden lg:flex items-center justify-center px-4 py-1"
-              onClick={() => navigate("/login")}
+              onClick={goToLogin}
             >
               entrar
             </Button>
 
             <Button
               className="hidden lg:flex items-center justify-center px-4 py-1"
-              onClick={() => navigate("/cadastro")}
+              onClick={goToRegister}
             >
               criar conta
             </Button>
@@ -138,7 +169,7 @@ export default function Navbar() {
             <div key={`${page.linkName}-${index}`} className="flex my-2">
               <button
                 onClick={() => {
-                  navigate(page.endpoint);
+                  goTo(page.endpoint);
                   setMenuOpen(false);
                 }}
                 className={
@@ -173,7 +204,7 @@ export default function Navbar() {
                 variant="outline"
                 className="flex w-full px-4 py-1"
                 onClick={() => {
-                  navigate("/login");
+                  goToLogin();
                   setMenuOpen(false);
                 }}
               >
@@ -185,7 +216,7 @@ export default function Navbar() {
               <Button
                 className="px-4 py-1"
                 onClick={() => {
-                  navigate("/cadastro");
+                  goToRegister();
                   setMenuOpen(false);
                 }}
               >

@@ -132,9 +132,18 @@
   h1 {
     @apply font-pixelsans text-[1.75rem] font-normal text-white py-2 text-shadow-pixel;
   }
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(120 120 120) !important;
+  }
+  
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    color: rgb(100 100 100) !important;
+  }
 }
 
-/* Toast customization */
 [data-sonner-toaster] {
   --normal-bg: var(--card);
   --normal-text: white;

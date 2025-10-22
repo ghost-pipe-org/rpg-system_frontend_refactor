@@ -6,4 +6,6 @@ export type User = {
     enrollment?: string;
     phoneNumber: string;
     masterConfirm: boolean;
+    role?: string;
+    isAdmin?: boolean;
 }

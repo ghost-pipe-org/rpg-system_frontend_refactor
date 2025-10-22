@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Button } from "../components/ui/button";
 import { Link as RouterLink } from "react-router";
 import { Home } from "lucide-react";
+import { ROUTES } from "../routes/routes";
 
 const NotFound = () => {
   const location = useLocation();
@@ -37,7 +38,7 @@ const NotFound = () => {
           </p>
         </div>
 
-        <RouterLink to="/">
+        <RouterLink to={ROUTES.HOME}>
           <Button variant="secondary" className="hover:cursor-pointer">
             <Home className="w-4 h-4" />
             Página inicial

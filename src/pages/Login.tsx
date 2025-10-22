@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router";
+import { Link } from "react-router";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import {
   Form,
@@ -15,11 +16,20 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import RootLayout from "../components/layout/RootLayout";
 import { useAuth } from "../context/AuthContext";
-import { loginSchema, type LoginFormData } from "../schemas/auth";
+import { loginSchema, type LoginFormData } from "../schemas/auth.schemas";
+import { useAppNavigation } from "../hooks/useAuth";
+import { ROUTES } from "../routes/routes";
 
 export default function LogIn() {
-  const navigate = useNavigate();
-  const { login } = useAuth();
+  const { goToHome } = useAppNavigation();
+  const { login, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.info("Você já está logado! Redirecionando...");
+      goToHome();
+    }
+  }, [isAuthenticated, goToHome]);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -29,11 +39,24 @@ export default function LogIn() {
     },
   });
 
+  if (isAuthenticated) {
+    return (
+      <RootLayout>
+        <div className="mx-auto max-w-md w-full text-center">
+          <h1 className="text-2xl text-foreground mb-4">Redirecionando...</h1>
+          <p className="text-muted-foreground">
+            Você já está logado. Redirecionando para a página inicial.
+          </p>
+        </div>
+      </RootLayout>
+    );
+  }
+
   async function onSubmit(values: LoginFormData) {
     try {
       await login(values);
       toast.success("Login realizado com sucesso!");
-      navigate("/");
+      goToHome();
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Erro ao fazer login";
       toast.error(errorMessage);
@@ -86,12 +109,12 @@ export default function LogIn() {
 
             <FormDescription className="flex justify-center gap-1 font-prompt">
               Não possuí uma conta?
-              <Link to="/cadastro" className="text-accent hover:text-primary no-underline hover:cursor-pointer">
+              <Link to={ROUTES.REGISTER} className="text-accent hover:text-primary no-underline hover:cursor-pointer">
                 Criar uma conta.
               </Link>
             </FormDescription>
 
-            <Button type="submit" className="w-full font-prompt">
+            <Button type="submit" className="w-full font-prompt uppercase">
               Entrar
             </Button>
           </form>

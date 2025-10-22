@@ -2,9 +2,8 @@ import { Github, Instagram, Mail } from "lucide-react";
 import { Button } from "../ui/button";
 import logoGhostpipe from "../../assets/images/logo-ghostpipe.png";
 import logoUepb from "../../assets/images/logo-uepb.svg";
-import logoCacc from "../../assets/images/logo-cacc.svg";
 import logoCurso from "../../assets/images/logo-curso.svg";
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/icons/logo.png";
 
 export default function Footer() {
   return (
@@ -27,7 +26,7 @@ export default function Footer() {
             <div className="flex flex-col gap-1 my-2">
               <Button variant="link" size="none" className="block m-0 p-0">
                 <a
-                  href="#"
+                  href="https://github.com/ghost-pipe-org"
                   className="font-light flex items-center gap-2 text-xs my-0.5"
                 >
                   <Github size={16} /> Github
@@ -35,7 +34,7 @@ export default function Footer() {
               </Button>
               <Button variant="link" size="none" className="block m-0 p-0">
                 <a
-                  href="#"
+                  href="https://www.instagram.com/rpg.uepbpatos"
                   className="font-light flex items-center gap-2 text-xs my-0.5"
                 >
                   <Instagram size={16} />
@@ -45,11 +44,11 @@ export default function Footer() {
 
               <Button variant="link" size="none" className="block m-0 p-0">
                 <a
-                  href="#"
+                  href="mailto:gabriel.menezes@aluno.uepb.edu.br"
                   className="font-light flex items-center gap-2 text-xs my-0.5"
                 >
                   <Mail size={16} />
-                  <span>nosso@email.com</span>
+                  <span>gabriel.menezes@aluno.uepb.edu.br</span>
                 </a>
               </Button>
             </div>
@@ -72,11 +71,6 @@ export default function Footer() {
           <img
             src={logoUepb}
             alt="Logo da UEPB"
-            className="h-13 object-contain"
-          />
-          <img
-            src={logoCacc}
-            alt="Logo do CCAC"
             className="h-13 object-contain"
           />
           <img
