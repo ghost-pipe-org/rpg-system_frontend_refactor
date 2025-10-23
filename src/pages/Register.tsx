@@ -70,7 +70,7 @@ export default function SingUp() {
         email: values.email,
         password: values.password,
         enrollment: values.registrationNumber || undefined,
-        phoneNumber: values.phone,
+        phoneNumber: values.phone.replace(/\D/g, ''), // Remove formatação: (83) 99999-9999 -> 83999999999
         masterConfirm: values.masterConfirm,
       };
 
