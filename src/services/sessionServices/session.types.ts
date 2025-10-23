@@ -32,6 +32,12 @@ interface Session {
         sessionId: string;
         status: string;
         createdAt: string;
+        user?: {
+            id: string;
+            name: string;
+            email: string;
+            phoneNumber?: string;
+        };
     }[];
 }
 

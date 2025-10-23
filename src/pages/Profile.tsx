@@ -1,5 +1,6 @@
 import RootLayout from "@/components/layout/RootLayout";
 import { SessionCard, SessionSkeleton } from "@/components/custom/SessionCard";
+import { MasterSessionCard } from "@/components/custom/MasterSessionCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import type { Session } from "@/services/sessionServices/session.types";
@@ -159,7 +160,7 @@ const Profile = () => {
             {!loadingEmitted && emittedSessions.length > 0 && (
               <div>
                 {emittedSessions.map((session) => (
-                  <SessionCard
+                  <MasterSessionCard
                     key={session.id || `session-${Math.random()}`}
                     session={session}
                     isExpanded={
