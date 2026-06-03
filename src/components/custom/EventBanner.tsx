@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Clock, Dice6, PenTool, Sparkles, Terminal } from "lucide-react";
+import { MapPin, Clock, Dice6, PenTool, Sparkles, Terminal } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 function StarField() {
