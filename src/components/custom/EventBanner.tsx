@@ -1,6 +1,5 @@
-import { Calendar, MapPin, Zap, ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import astronautImg from "@/assets/images/image-6.webp";
+import { MapPin, Clock, Dice6, PenTool, Sparkles, Terminal } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 function StarField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -19,7 +18,7 @@ function StarField() {
     window.addEventListener("resize", resize);
 
     const stars: { x: number; y: number; r: number; o: number; speed: number }[] = [];
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 150; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -37,7 +36,8 @@ function StarField() {
         if (s.o > 1) s.o = 0;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${0.3 + Math.abs(Math.sin(s.o)) * 0.7})`;
+        // Ciano/Azul claro para combinar com a identidade
+        ctx.fillStyle = `rgba(135,206,235,${0.2 + Math.abs(Math.sin(s.o)) * 0.6})`;
         ctx.fill();
       });
       animId = requestAnimationFrame(draw);
@@ -58,235 +58,115 @@ function StarField() {
   );
 }
 
-function SemanaZeroGrid() {
+function CyberGrid() {
   return (
     <div 
-      className="absolute inset-0 pointer-events-none opacity-20" 
+      className="absolute inset-0 pointer-events-none opacity-10" 
       style={{
-        backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)",
-        backgroundSize: "40px 40px"
+        backgroundImage: "linear-gradient(to right, rgba(0,255,255,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,255,255,0.15) 1px, transparent 1px)",
+        backgroundSize: "30px 30px",
+        maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",
+        WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)"
       }}
     />
   );
 }
 
-function SemanaZeroBanner() {
+export function EventBanner() {
   return (
     <div
-      className="absolute inset-0 w-full h-full flex flex-col overflow-hidden"
+      className="relative w-full rounded-2xl overflow-hidden mb-8 shadow-2xl"
       style={{
-        background: "linear-gradient(135deg, #3b0764 0%, #6b21a8 50%, #9333ea 100%)",
-        border: "1px solid rgba(167,139,250,0.3)",
-      }}
-    >
-      <style>
-        {`
-          @keyframes float {
-            0% { transform: translateY(0px) rotate(-2deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-            100% { transform: translateY(0px) rotate(-2deg); }
-          }
-        `}
-      </style>
-      <SemanaZeroGrid />
-
-      {/* Astro / Content Layout */}
-      <div className="relative z-10 w-full h-full flex items-center justify-between px-6 sm:px-16 py-8">
-         <div className="flex flex-col items-center sm:items-start text-center sm:text-left gap-4 w-full sm:max-w-lg z-20">
-            {/* Title */}
-            <div className="flex flex-col items-center sm:items-start">
-              <span className="text-white/90 font-mono tracking-[0.4em] uppercase text-sm sm:text-base flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                IX
-                <span className="w-1.5 h-1.5 rounded-full bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-              </span>
-              <h2 
-                className="text-6xl sm:text-8xl font-black leading-none text-white tracking-tighter mt-2"
-                style={{ textShadow: "0 4px 20px rgba(0,0,0,0.4)" }}
-              >
-                SEMANA<br/>
-                <span className="text-4xl sm:text-6xl tracking-[0.1em] sm:tracking-[0.2em] text-purple-200">zero</span>
-              </h2>
-            </div>
-            
-            <div className="mt-2 text-purple-100 font-medium text-sm sm:text-base bg-white/10 px-4 py-1.5 rounded-full border border-white/20 backdrop-blur-sm">
-              Amostra de Projetos de Extensão
-            </div>
-
-            {/* Info */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-                <Calendar size={16} className="text-purple-300" />
-                <span className="text-white font-semibold text-sm">06 de Maio de 2026</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-                <MapPin size={16} className="text-purple-300" />
-                <span className="text-white font-semibold text-sm">UEPB – Campus VII</span>
-              </div>
-            </div>
-         </div>
-
-         {/* Astronaut Image right side */}
-         <div 
-           className="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 h-[90%] pointer-events-none z-10"
-           style={{ animation: 'float 6s ease-in-out infinite' }}
-         >
-            <img 
-              src={astronautImg} 
-              alt="Astronauta" 
-              className="h-full w-auto object-contain drop-shadow-2xl"
-              style={{ filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
-            />
-         </div>
-      </div>
-    </div>
-  );
-}
-
-function EncontroRpgBanner() {
-  return (
-    <div
-      className="absolute inset-0 w-full h-full flex flex-col items-center justify-center overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse at 60% 0%, rgba(180,30,120,0.35) 0%, transparent 60%), radial-gradient(ellipse at 10% 80%, rgba(80,30,180,0.3) 0%, transparent 55%), #080810",
-        border: "1px solid rgba(220,60,160,0.35)",
+        background: "linear-gradient(180deg, #050a15 0%, #0a1128 100%)",
+        border: "1px solid rgba(0, 255, 255, 0.2)",
+        boxShadow: "0 0 40px rgba(0, 200, 255, 0.15), inset 0 0 20px rgba(0, 200, 255, 0.05)",
       }}
     >
       <StarField />
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px"
-        style={{ background: "linear-gradient(to right, transparent, rgba(220,60,160,0.8), transparent)" }}
+      <CyberGrid />
+
+      {/* Brilho Central */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] blur-[100px] pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(0,180,255,0.15) 0%, transparent 70%)" }}
       />
-      <div className="relative z-10 px-6 py-8 sm:px-10 sm:py-10 flex flex-col items-center text-center gap-5 w-full">
-        <div
-          className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
-          style={{
-            background: "rgba(220,60,160,0.05)",
-            border: "1px solid rgba(220,60,160,0.2)",
-            color: "#f472b6",
-            opacity: 0.8
-          }}
-        >
-          <Zap size={11} className="shrink-0" />
-          Inscrições Encerradas
-          <Zap size={11} className="shrink-0" />
+
+      <div className="relative z-10 px-6 py-10 sm:px-12 sm:py-14 flex flex-col items-center text-center gap-8">
+        
+        {/* Top Header */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-3 text-cyan-400 font-mono text-xs sm:text-sm tracking-widest uppercase">
+            <Terminal size={14} />
+            <span>Tópicos Especiais em Aventuras</span>
+            <Terminal size={14} />
+          </div>
         </div>
-        <div className="space-y-1">
-          <p className="text-white/40 text-sm font-mono tracking-[0.2em] uppercase">
-            II Encontro de
-          </p>
-          <h2
-            className="font-pixelsans text-4xl sm:text-6xl font-black leading-none opacity-80"
-            style={{
-              background: "linear-gradient(135deg, #f9a8d4 0%, #ec4899 35%, #a855f7 65%, #7c3aed 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+
+        {/* Main Title Group */}
+        <div className="flex flex-col items-center relative">
+          {/* Decorative lines */}
+          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400 opacity-50 -ml-4 -mt-2" />
+          <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan-400 opacity-50 -mr-4 -mt-2" />
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan-400 opacity-50 -ml-4 -mb-2" />
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400 opacity-50 -mr-4 -mb-2" />
+
+          <h1 
+            className="text-6xl sm:text-8xl font-black tracking-wider uppercase mb-2 text-white"
+            style={{ 
+              textShadow: "0 0 20px rgba(34, 211, 238, 0.5), 0 0 40px rgba(34, 211, 238, 0.3)",
+              fontFamily: "var(--font-heading, system-ui, sans-serif)"
             }}
           >
-            RPG
-          </h2>
-          <p className="text-white/80 font-bold text-lg sm:text-xl tracking-wide">
-            O Despertar da Força Narrativa
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 opacity-70">
-          <div
-            className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl"
-            style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(236,72,153,0.15)" }}
-          >
-            <Calendar size={16} style={{ color: "#f472b6" }} />
-            <span className="text-white font-semibold text-sm">04 de Maio de 2026</span>
-          </div>
-          <div
-            className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl"
-            style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(168,85,247,0.15)" }}
-          >
-            <MapPin size={16} style={{ color: "#c084fc" }} />
-            <span className="text-white font-semibold text-sm">UEPB – Campus VII</span>
+            ARRAIÁ
+          </h1>
+          <div className="flex items-center gap-4">
+            <div className="h-px w-12 sm:w-24 bg-gradient-to-r from-transparent to-cyan-500" />
+            <p className="text-cyan-300 font-bold tracking-[0.2em] text-sm sm:text-base uppercase">
+              O Sertão Também é Futuro
+            </p>
+            <div className="h-px w-12 sm:w-24 bg-gradient-to-l from-transparent to-cyan-500" />
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
 
-interface EventBannerProps {
-  onSelectDate?: (date: string) => void;
-}
+        {/* Date & Info Block */}
+        <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 mt-2">
+          <div className="flex items-center gap-3">
+            <span className="text-5xl font-black text-white" style={{ textShadow: "0 0 20px rgba(255,255,255,0.3)" }}>13</span>
+            <div className="flex flex-col items-start text-left">
+              <span className="text-cyan-400 font-bold tracking-widest text-lg leading-tight uppercase">Junho</span>
+              <div className="flex items-center gap-1.5 text-white/80 text-xs font-mono">
+                <Clock size={12} className="text-cyan-500" /> DAS 13H ÀS 18H
+              </div>
+              <div className="flex items-center gap-1.5 text-white/80 text-xs font-mono mt-0.5">
+                <MapPin size={12} className="text-cyan-500" /> UEPB - CAMPUS VII
+              </div>
+            </div>
+          </div>
+        </div>
 
-const BANNERS = [
-  {
-    id: "semana-zero",
-    dateFilter: "2026-05-06",
-    render: () => <SemanaZeroBanner />
-  },
-  {
-    id: "encontro-rpg",
-    dateFilter: "2026-05-04",
-    render: () => <EncontroRpgBanner />
-  }
-];
+        {/* Activities */}
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-2 relative">
+           {/* Center connecting line */}
+           <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-px bg-cyan-900/50 -z-10" />
 
-export function EventBanner({ onSelectDate }: EventBannerProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (onSelectDate) {
-      onSelectDate(BANNERS[currentIndex].dateFilter);
-    }
-  }, [currentIndex, onSelectDate]);
-
-  const nextBanner = () => {
-    setCurrentIndex((prev) => (prev + 1) % BANNERS.length);
-  };
-
-  const prevBanner = () => {
-    setCurrentIndex((prev) => (prev - 1 + BANNERS.length) % BANNERS.length);
-  };
-
-  return (
-    <div className="relative w-full rounded-2xl overflow-hidden mb-8 group shadow-2xl transition-all duration-500">
-      <div className="w-full relative h-[480px] sm:h-[440px]">
-        {BANNERS.map((banner, idx) => (
-           <div 
-             key={banner.id}
-             className="absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out"
-             style={{ 
-               opacity: currentIndex === idx ? 1 : 0, 
-               pointerEvents: currentIndex === idx ? 'auto' : 'none' 
-             }}
-           >
-             {banner.render()}
+           <div className="flex items-center gap-3 px-6 py-3 rounded-lg bg-[#0a1931] border border-cyan-800/50 shadow-[0_0_15px_rgba(0,255,255,0.1)]">
+             <Dice6 className="text-cyan-400" size={20} />
+             <span className="text-white font-bold tracking-wider text-sm">MESAS DE RPG</span>
            </div>
-        ))}
-      </div>
 
-      {/* Navigation Controls */}
-      <button 
-        onClick={prevBanner}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/60 opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 hover:scale-110 hover:text-white z-30 backdrop-blur-sm"
-      >
-        <ChevronLeft size={24} />
-      </button>
+           <div className="flex items-center gap-3 px-6 py-3 rounded-lg bg-[#0a1931] border border-cyan-800/50 shadow-[0_0_15px_rgba(0,255,255,0.1)]">
+             <PenTool className="text-cyan-400" size={20} />
+             <span className="text-white font-bold tracking-wider text-sm">COMPETIÇÃO DE DESENHO</span>
+           </div>
+        </div>
 
-      <button 
-        onClick={nextBanner}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/60 opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 hover:scale-110 hover:text-white z-30 backdrop-blur-sm"
-      >
-        <ChevronRight size={24} />
-      </button>
+        {/* Footer info */}
+        <div className="flex items-center gap-2 text-white/40 text-xs font-mono mt-4">
+          <Sparkles size={12} className="text-cyan-500/50" />
+          <span>ABERTO AO PÚBLICO GERAL | EVENTO GRATUITO | @rpg.uepbpatos</span>
+          <Sparkles size={12} className="text-cyan-500/50" />
+        </div>
 
-      {/* Indicators */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-        {BANNERS.map((_, i) => (
-          <button 
-            key={i} 
-            onClick={() => setCurrentIndex(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === i ? 'bg-white/90 w-6' : 'bg-white/40 w-2 hover:bg-white/60'}`} 
-          />
-        ))}
       </div>
     </div>
   );
