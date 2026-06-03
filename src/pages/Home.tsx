@@ -1,114 +1,71 @@
 import { RootLayout } from "../components/layout";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
-import { Rocket, Dice6, Wrench, FlaskConical, Clock, ChevronRight, Sunrise, Sun, Moon } from "lucide-react";
+import { EventBanner } from "@/components/custom/EventBanner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { ROUTES } from "@/routes/routes";
-import { EventBanner } from "@/components/custom/EventBanner";
-
-const activities = [
-  { icon: Dice6, label: "Mesas de RPG", desc: "Sistemas variados e narrativas do cósmico ao desconhecido", color: "#ec4899" },
-  { icon: Wrench, label: "Oficinas", desc: "Criação, desenvolvimento e aprofundamento no universo do RPG", color: "#a855f7" },
-  { icon: FlaskConical, label: "Mostra Acadêmica", desc: "Produções que expandem os limites entre ficção e ciência", color: "#6366f1" },
-];
-
-const periods = [
-  { time: "Manhã", icon: Sunrise, desc: "Primeira missão do dia" },
-  { time: "Tarde", icon: Sun, desc: "O universo se expande" },
-  { time: "Noite", icon: Moon, desc: "A força narrativa desperta" },
-];
+import { ChevronRight, ExternalLink } from "lucide-react";
 
 const Home = () => {
   useDocumentTitle();
 
   return (
     <RootLayout>
-      <div className="w-full max-w-4xl mx-auto px-4">
+      <div className="w-full max-w-4xl mx-auto px-4 pb-12 flex flex-col items-center">
 
-        {/* ── HERO ── */}
-        <div className="mb-10 flex flex-col items-center">
-          <EventBanner />
+        {/* Banner do Evento Arraiá */}
+        <EventBanner />
 
-          <div className="flex flex-col items-center gap-3 -mt-4 mb-4">
-            <Link to={ROUTES.SESSIONS}>
-              <Button
-                className="uppercase font-bold px-8 py-6 text-sm rounded-xl gap-2 transition-transform hover:scale-105"
-                style={{
-                  background: "linear-gradient(135deg, #ec4899, #a855f7)",
-                  boxShadow: "0 4px 20px rgba(236,72,153,0.4)",
-                  border: "none",
-                  color: "white",
-                }}
-              >
-                Explorar Eventos <ChevronRight size={18} />
-              </Button>
-            </Link>
-            <span className="text-white/40 text-xs font-mono flex items-center gap-1.5 mt-2">
-              <Rocket size={14} className="text-purple-400" /> Eventos gratuitos · Abertos ao público
-            </span>
+        {/* Sinopse do Evento */}
+        <div className="w-full max-w-3xl mt-4 mb-10">
+          <div className="relative p-6 sm:p-8 rounded-2xl overflow-hidden bg-[#0a1128]/50 border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.05)] backdrop-blur-sm">
+            {/* Elemento decorativo */}
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-400 to-transparent" />
+
+            <p className="text-white/80 text-lg leading-relaxed mb-6 font-medium">
+              Vem aí a edição especial do <strong className="text-cyan-400">Tópicos Especiais em Aventuras - Arraiá</strong>, onde o clima junino ganha uma nova dimensão.
+              Em uma celebração que mistura a energia das festas de São João com a criatividade da ficção científica, convidamos
+              você para uma experiência única entre tradição e tecnologia.
+            </p>
+
+            <div className="bg-cyan-950/30 p-4 rounded-xl border border-cyan-800/30 mb-6">
+              <p className="text-cyan-100/90 text-md leading-relaxed italic text-center">
+                "Prepare-se para atravessar portais, lançar os dados e criar novas histórias em um universo onde fogueiras
+                iluminam e estrelas dançam ao som do forró."
+              </p>
+            </div>
+
+            <div className="flex items-center justify-center gap-2 text-cyan-500/60 font-mono text-sm tracking-widest uppercase">
+              <span>Mais informações em breve</span>
+            </div>
           </div>
         </div>
 
-        {/* ── ATIVIDADES ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          {activities.map(({ icon: Icon, label, desc, color }) => (
-            <div
-              key={label}
-              className="relative rounded-2xl p-5 flex flex-col gap-3 overflow-hidden group"
+        {/* Botões de Ação */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-lg">
+          <Link to={ROUTES.SESSIONS} className="w-full sm:w-auto">
+            <Button
+              className="w-full sm:w-auto uppercase font-bold px-8 py-6 text-sm rounded-xl gap-2 transition-transform hover:scale-105"
               style={{
-                background: "rgba(255,255,255,0.03)",
-                border: `1px solid ${color}30`,
-                transition: "border-color 0.3s, box-shadow 0.3s",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = `${color}60`;
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 24px ${color}20`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = `${color}30`;
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                background: "linear-gradient(135deg, #06b6d4, #3b82f6)",
+                boxShadow: "0 4px 20px rgba(6, 182, 212, 0.3)",
+                border: "none",
+                color: "white",
               }}
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${color}20` }}>
-                <Icon size={20} style={{ color }} />
-              </div>
-              <div>
-                <p className="text-white font-bold text-sm">{label}</p>
-                <p className="text-white/50 text-xs mt-1 leading-relaxed">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              Mesas de RPG <ChevronRight size={18} />
+            </Button>
+          </Link>
 
-        {/* ── TURNOS ── */}
-        <div
-          className="rounded-2xl px-6 py-5 mb-10"
-          style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)" }}
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Clock size={15} style={{ color: "#a855f7" }} />
-            <p className="text-white/60 text-xs font-mono uppercase tracking-widest">Turnos do dia</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {periods.map(({ time, icon: Icon, desc }) => (
-              <div key={time} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
-                <div className="p-2 rounded-lg bg-white/5">
-                  <Icon size={20} className="text-purple-300" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-sm">{time}</p>
-                  <p className="text-white/40 text-xs">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── FOOTER DO EVENTO ── */}
-        <div className="text-center pb-4">
-          <p className="text-white/25 text-xs font-mono">
-            Prepare sua ficha · Ajuste seus dados · Vamos sair do espaço acadêmico para o espaço sideral
-          </p>
+          {/* Placeholder para Competição de Desenho */}
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto uppercase font-bold px-8 py-6 text-sm rounded-xl gap-2 border-cyan-700 text-cyan-500 hover:bg-cyan-950/30 hover:text-cyan-400"
+            disabled
+            title="Link em breve!"
+          >
+            Competição de Desenho (Em breve...) <ExternalLink size={18} />
+          </Button>
         </div>
 
       </div>
